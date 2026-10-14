@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARD Verification Identity Card | Nigerian Identity & Business Services</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#0A192F',
+                            900: '#020C1B',
+                            700: '#112240',
+                            600: '#1D3557'
+                        },
+                        gold: {
+                            500: '#D4AF37',
+                            600: '#AA8C2C',
+                            400: '#F1C40F'
+                        },
+                        silver: {
+                            300: '#E2E8F0',
+                            400: '#CBD5E1',
+                            500: '#94A3B8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .bg-pattern {
+            background-color: #0A192F;
+            background-image: radial-gradient(rgba(212, 175, 55, 0.1) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020C1B; }
+        ::-webkit-scrollbar-thumb { background: #1D3557; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+    </style>
+</head>
+<body class="bg-navy-900 text-silver-300 min-h-screen flex flex-col selection:bg-gold-500 selection:text-navy-900">
+
+    <!-- Notification Banner / Message Box Modal -->
+    <div id="messageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm hidden">
+        <div class="bg-navy-800 border border-gold-500/40 rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl transform transition-all">
+            <div class="flex items-center space-x-3 mb-4">
+                <div id="modalIcon" class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-500 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+                <h3 id="modalTitle" class="text-xl font-bold text-white">Notice</h3>
+            </div>
+            <p id="modalMessage" class="text-silver-400 text-sm mb-6 leading-relaxed">Message content goes here...</p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-navy-900 font-semibold hover:opacity-90 transition shadow-lg shadow-gold-500/20">
+                    Okay, Understood
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 bg-navy-900/95 backdrop-blur border-b border-gold-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo Brand -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center text-navy-900 font-black text-2xl shadow-lg shadow-gold-500/20 border border-gold-400">
+                    <i class="fa-solid fa-id-card-clip"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold tracking-wider text-white">ARD VERIFICATION</h1>
+                    <p class="text-xs text-gold-500 font-medium tracking-widest uppercase">Identity & Business Services</p>
+                </div>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                <button onclick="switchTab('home')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition text-white hover:text-gold-500 hover:bg-navy-800" data-target="home">Home</button>
+                <button onclick="switchTab('directory')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition text-silver-400 hover:text-gold-500 hover:bg-navy-800" data-target="directory">Services & Pricing</button>
+                <button onclick="switchTab('track')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition text-silver-400 hover:text-gold-500 hover:bg-navy-800" data-target="track">Track Request</button>
+                <button onclick="switchTab('user-dashboard')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition text-silver-400 hover:text-gold-500 hover:bg-navy-800" data-target="user-dashboard">My Dashboard</button>
+                <button onclick="switchTab('admin-dashboard')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition text-silver-400 hover:text-gold-500 hover:bg-navy-800 flex items-center space-x-1.5 border border-gold-500/30 bg-gold-500/10 text-gold-400">
+                    <i class="fa-solid fa-shield-halved"></i><span>Admin Portal</span>
+                </button>
+            </nav>
+
+            <!-- Mobile Hamburger -->
+            <div class="md:hidden flex items-center space-x-3">
+                <button onclick="switchTab('admin-dashboard')" class="p-2 rounded-lg bg-gold-500/10 border border-gold-500/30 text-gold-400 text-sm">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </button>
+                <button onclick="toggleMobileMenu()" class="p-2.5 rounded-lg bg-navy-800 text-silver-300 hover:text-gold-500 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl" id="mobileMenuIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-navy-800 border-b border-gold-500/20 px-4 pt-2 pb-4 space-y-2">
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-white hover:bg-navy-700">Home</button>
+            <button onclick="switchTab('directory'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-silver-300 hover:bg-navy-700">Services & Pricing</button>
+            <button onclick="switchTab('track'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-silver-300 hover:bg-navy-700">Track Request</button>
+            <button onclick="switchTab('user-dashboard'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-silver-300 hover:bg-navy-700">My Dashboard</button>
+            <button onclick="switchTab('admin-dashboard'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-gold-400 bg-gold-500/10 border border-gold-500/30">Admin Portal</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow">
+
+        <!-- TAB 1: HOME -->
+        <section id="tab-home" class="tab-content">
+            <!-- Hero Banner -->
+            <div class="relative bg-pattern py-20 lg:py-32 overflow-hidden border-b border-gold-500/20">
+                <div class="absolute inset-0 bg-gradient-to-r from-navy-900 via-navy-900/90 to-transparent z-0"></div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div class="max-w-3xl">
+                        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-400 text-xs font-semibold mb-6">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Authorized Nigerian Verification & Business Hub</span>
+                        </div>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
+                            Secure Identity & <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">Business Services</span>
+                        </h1>
+                        <p class="text-base sm:text-lg text-silver-400 mb-8 leading-relaxed">
+                            Fast, reliable, and compliant assistance for NIN validation & modifications, BVN updates, CAC corporate registrations, and FIRS Tax Identification Number (TIN) services.
+                        </p>
+                        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                            <button onclick="switchTab('directory')" class="px-8 py-4 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-navy-900 font-bold hover:opacity-95 transition shadow-lg shadow-gold-500/20 flex items-center justify-center space-x-2">
+                                <span>Explore Service Directory</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button onclick="switchTab('track')" class="px-8 py-4 rounded-xl bg-navy-800 border border-gold-500/40 text-white font-semibold hover:bg-navy-700 transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <span>Track Existing Request</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats & Features Bar -->
+            <div class="bg-navy-800 border-b border-silver-500/10 py-10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div class="p-4 rounded-xl bg-navy-900/50 border border-silver-500/10">
+                        <div class="text-3xl font-black text-gold-400 mb-1">100%</div>
+                        <div class="text-xs text-silver-400 uppercase tracking-wider font-medium">Official Channel Compliant</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-navy-900/50 border border-silver-500/10">
+                        <div class="text-3xl font-black text-gold-400 mb-1">4 Major</div>
+                        <div class="text-xs text-silver-400 uppercase tracking-wider font-medium">Service Categories (NIN, BVN, CAC, TIN)</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-navy-900/50 border border-silver-500/10">
+                        <div class="text-3xl font-black text-gold-400 mb-1">Secure</div>
+                        <div class="text-xs text-silver-400 uppercase tracking-wider font-medium">Reference Tracking System</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-navy-900/50 border border-silver-500/10">
+                        <div class="text-3xl font-black text-gold-400 mb-1">NDPR</div>
+                        <div class="text-xs text-silver-400 uppercase tracking-wider font-medium">Data Privacy Guaranteed</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Overview Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-4">Core Service Categories</h2>
+                    <p class="text-silver-400 text-sm">Select a category below to browse verified services, view transparent pricing, and initiate your service request.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- NIN Card -->
+                    <div onclick="filterByCategory('NIN')" class="bg-navy-800 border border-gold-500/30 rounded-2xl p-6 cursor-pointer hover:border-gold-500 transition group shadow-xl">
+                        <div class="w-14 h-14 rounded-xl bg-gold-500/10 text-gold-500 flex items-center justify-center text-2xl mb-4 group-hover:bg-gold-500 group-hover:text-navy-900 transition">
+                            <i class="fa-solid fa-id-card"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">NIN Services</h3>
+                        <p class="text-silver-400 text-xs mb-4 leading-relaxed">National Identification Number validation, slips, and official record modifications.</p>
+                        <span class="text-gold-400 text-xs font-semibold flex items-center space-x-1 group-hover:translate-x-1 transition">
+                            <span>Browse 13 Services</span> <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+
+                    <!-- BVN Card -->
+                    <div onclick="filterByCategory('BVN')" class="bg-navy-800 border border-gold-500/30 rounded-2xl p-6 cursor-pointer hover:border-gold-500 transition group shadow-xl">
+                        <div class="w-14 h-14 rounded-xl bg-gold-500/10 text-gold-500 flex items-center justify-center text-2xl mb-4 group-hover:bg-gold-500 group-hover:text-navy-900 transition">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">BVN Services</h3>
+                        <p class="text-silver-400 text-xs mb-4 leading-relaxed">Bank Verification Number enrolment, information updates, and NIN linking assistance.</p>
+                        <span class="text-gold-400 text-xs font-semibold flex items-center space-x-1 group-hover:translate-x-1 transition">
+                            <span>Browse 12 Services</span> <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+
+                    <!-- CAC Card -->
+                    <div onclick="filterByCategory('CAC')" class="bg-navy-800 border border-gold-500/30 rounded-2xl p-6 cursor-pointer hover:border-gold-500 transition group shadow-xl">
+                        <div class="w-14 h-14 rounded-xl bg-gold-500/10 text-gold-500 flex items-center justify-center text-2xl mb-4 group-hover:bg-gold-500 group-hover:text-navy-900 transition">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">CAC Services</h3>
+                        <p class="text-silver-400 text-xs mb-4 leading-relaxed">Corporate Affairs Commission business name & company registrations, status reports.</p>
+                        <span class="text-gold-400 text-xs font-semibold flex items-center space-x-1 group-hover:translate-x-1 transition">
+                            <span>Browse 12 Services</span> <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+
+                    <!-- TIN Card -->
+                    <div onclick="filterByCategory('TIN')" class="bg-navy-800 border border-gold-500/30 rounded-2xl p-6 cursor-pointer hover:border-gold-500 transition group shadow-xl">
+                        <div class="w-14 h-14 rounded-xl bg-gold-500/10 text-gold-500 flex items-center justify-center text-2xl mb-4 group-hover:bg-gold-500 group-hover:text-navy-900 transition">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">TIN Services</h3>
+                        <p class="text-silver-400 text-xs mb-4 leading-relaxed">Tax Identification Number registration, verification, retrieval, and taxpayer updates.</p>
+                        <span class="text-gold-400 text-xs font-semibold flex items-center space-x-1 group-hover:translate-x-1 transition">
+                            <span>Browse 9 Services</span> <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: SERVICE DIRECTORY -->
+        <section id="tab-directory" class="tab-content hidden py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 pb-6 border-b border-silver-500/10">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white mb-2">Official Service Directory</h2>
+                        <p class="text-silver-400 text-sm">Browse all authorized NIN, BVN, CAC, and TIN services with transparent official & service fees.</p>
+                    </div>
+                    <!-- Search Input -->
+                    <div class="mt-4 md:mt-0 w-full md:w-80">
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-silver-500 text-sm"></i>
+                            <input type="text" id="serviceSearchInput" onkeyup="filterServices()" placeholder="Search services..." class="w-full pl-10 pr-4 py-2.5 bg-navy-800 border border-silver-500/20 rounded-xl text-sm text-white placeholder-silver-500 focus:outline-none focus:border-gold-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div class="flex flex-wrap gap-2 mb-8">
+                    <button onclick="filterByCategory('ALL')" class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-gold-500 text-navy-900 transition shadow">All Services</button>
+                    <button onclick="filterByCategory('NIN')" class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-navy-800 border border-silver-500/20 text-silver-300 hover:border-gold-500 transition">NIN Services</button>
+                    <button onclick="filterByCategory('BVN')" class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-navy-800 border border-silver-500/20 text-silver-300 hover:border-gold-500 transition">BVN Services</button>
+                    <button onclick="filterByCategory('CAC')" class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-navy-800 border border-silver-500/20 text-silver-300 hover:border-gold-500 transition">CAC Services</button>
+                    <button onclick="filterByCategory('TIN')" class="category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-navy-800 border border-silver-500/20 text-silver-300 hover:border-gold-500 transition">TIN Services</button>
+                </div>
+
+                <!-- Services Grid -->
+                <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic Service Cards injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: REQUEST FORM / PAYMENT MODAL VIEW -->
+        <section id="tab-request" class="tab-content hidden py-12">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-navy-800 border border-gold-500/30 rounded-3xl p-6 sm:p-10 shadow-2xl relative">
+                    <button onclick="switchTab('directory')" class="absolute top-6 right-6 text-silver-400 hover:text-white text-sm flex items-center space-x-1">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                    <div class="mb-8">
+                        <span id="reqCategoryBadge" class="px-3 py-1 rounded-full bg-gold-500/10 text-gold-400 text-xs font-bold border border-gold-500/30">NIN Service</span>
+                        <h2 id="reqServiceTitle" class="text-2xl sm:text-3xl font-extrabold text-white mt-2">Request Service</h2>
+                        <p id="reqServiceDesc" class="text-silver-400 text-sm mt-1">Complete the required details below to submit your service request.</p>
+                    </div>
+
+                    <!-- Fee breakdown box -->
+                    <div class="bg-navy-900/60 border border-silver-500/20 rounded-2xl p-4 mb-6 grid grid-cols-2 gap-4">
+                        <div>
+                            <span class="text-xs text-silver-500 uppercase tracking-wider">Official Provider Fee</span>
+                            <div id="displayOfficialFee" class="text-lg font-bold text-white">₦0.00</div>
+                        </div>
+                        <div>
+                            <span class="text-xs text-silver-500 uppercase tracking-wider">Platform Service Charge</span>
+                            <div id="displayServiceFee" class="text-lg font-bold text-gold-400">₦0.00</div>
+                        </div>
+                        <div class="col-span-2 pt-2 border-t border-silver-500/10 flex justify-between items-center">
+                            <span class="text-xs font-semibold text-silver-300 uppercase">Total Payable Amount</span>
+                            <span id="displayTotalFee" class="text-xl font-black text-gold-400">₦0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Request Form -->
+                    <form id="serviceRequestForm" onsubmit="handleFormSubmit(event)" class="space-y-5">
+                        <input type="hidden" id="formServiceId">
+                        <input type="hidden" id="formServiceName">
+                        <input type="hidden" id="formCategory">
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-silver-300 mb-2">Full Name (As per official records)</label>
+                            <input type="text" id="clientFullName" required placeholder="e.g. Adebayo Ogunlesi" class="w-full px-4 py-3 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white placeholder-silver-500 focus:outline-none focus:border-gold-500">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-silver-300 mb-2">Contact Email</label>
+                                <input type="email" id="clientEmail" required placeholder="name@example.com" class="w-full px-4 py-3 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white placeholder-silver-500 focus:outline-none focus:border-gold-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-silver-300 mb-2">Phone Number</label>
+                                <input type="tel" id="clientPhone" required placeholder="08012345678" class="w-full px-4 py-3 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white placeholder-silver-500 focus:outline-none focus:border-gold-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-silver-300 mb-2">Request Description / Specific Instructions</label>
+                            <textarea id="clientDescription" rows="3" required placeholder="Provide relevant details or numbers needed for assistance..." class="w-full px-4 py-3 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white placeholder-silver-500 focus:outline-none focus:border-gold-500"></textarea>
+                        </div>
+
+                        <!-- Simulated Payment Method -->
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-silver-300 mb-2">Payment Simulation Gateway</label>
+                            <select id="paymentMethod" class="w-full px-4 py-3 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white focus:outline-none focus:border-gold-500">
+                                <option value="card">Bank Debit Card (Simulation)</option>
+                                <option value="transfer">Bank Transfer (Instant Verification)</option>
+                                <option value="ussd">USSD Mobile Code</option>
+                            </select>
+                        </div>
+
+                        <!-- Consent Checkbox -->
+                        <div class="flex items-start space-x-3 pt-2">
+                            <input type="checkbox" id="consentCheck" required class="mt-1 w-4 h-4 rounded bg-navy-900 border-silver-500/30 text-gold-500 focus:ring-0">
+                            <label for="consentCheck" class="text-xs text-silver-400 leading-relaxed">
+                                I consent to ARD Verification handling my request through authorized official channels in accordance with the Nigerian Data Protection Regulation (NDPR). I confirm that no sensitive banking PINs or unauthorized passwords are requested or submitted.
+                            </label>
+                        </div>
+
+                        <div class="pt-4 flex items-center justify-end space-x-4">
+                            <button type="button" onclick="switchTab('directory')" class="px-6 py-3 rounded-xl bg-navy-900 border border-silver-500/20 text-silver-300 font-semibold text-sm hover:bg-navy-700 transition">Cancel</button>
+                            <button type="submit" class="px-8 py-3 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-navy-900 font-bold text-sm hover:opacity-95 transition shadow-lg shadow-gold-500/20 flex items-center space-x-2">
+                                <i class="fa-solid fa-lock"></i>
+                                <span>Proceed & Pay Securely</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: TRACK REQUEST -->
+        <section id="tab-track" class="tab-content hidden py-12">
+            <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-navy-800 border border-gold-500/30 rounded-3xl p-6 sm:p-8 shadow-xl text-center mb-8">
+                    <div class="w-16 h-16 rounded-2xl bg-gold-500/10 text-gold-500 flex items-center justify-center text-2xl mx-auto mb-4 border border-gold-500/30">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-2">Track Service Request</h2>
+                    <p class="text-silver-400 text-xs mb-6">Enter your unique ARD request reference code (e.g., ARD-NIN-8492) to view live status.</p>
+                    
+                    <div class="flex space-x-2">
+                        <input type="text" id="trackInputCode" placeholder="Enter Reference Code..." class="flex-grow px-4 py-3 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white uppercase placeholder-silver-500 focus:outline-none focus:border-gold-500">
+                        <button onclick="executeTrackSearch()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-navy-900 font-bold text-sm hover:opacity-95 transition shadow">
+                            Track
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tracking Result Container -->
+                <div id="trackResultContainer" class="hidden">
+                    <!-- Dynamic result loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: USER DASHBOARD -->
+        <section id="tab-user-dashboard" class="tab-content hidden py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 pb-6 border-b border-silver-500/10">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white mb-2">User Dashboard</h2>
+                        <p class="text-silver-400 text-sm">Monitor your submitted verification and registration requests in real time.</p>
+                    </div>
+                    <button onclick="loadUserRequests()" class="mt-4 md:mt-0 px-4 py-2.5 rounded-xl bg-navy-800 border border-gold-500/30 text-gold-400 text-xs font-semibold hover:bg-navy-700 transition flex items-center space-x-2">
+                        <i class="fa-solid fa-rotate"></i><span>Refresh Requests</span>
+                    </button>
+                </div>
+
+                <!-- User Requests Table / Cards -->
+                <div class="bg-navy-800 border border-gold-500/30 rounded-2xl overflow-hidden shadow-xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-navy-900 border-b border-silver-500/10 text-xs uppercase tracking-wider text-silver-400">
+                                    <th class="p-4">Reference</th>
+                                    <th class="p-4">Service Name</th>
+                                    <th class="p-4">Category</th>
+                                    <th class="p-4">Date Submitted</th>
+                                    <th class="p-4">Payment</th>
+                                    <th class="p-4">Current Status</th>
+                                    <th class="p-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userRequestsTableBody" class="divide-y divide-silver-500/10 text-sm text-silver-300">
+                                <!-- Injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: ADMIN DASHBOARD -->
+        <section id="tab-admin-dashboard" class="tab-content hidden py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 pb-6 border-b border-silver-500/10">
+                    <div>
+                        <div class="flex items-center space-x-2 text-gold-400 text-xs font-bold uppercase tracking-widest mb-1">
+                            <i class="fa-solid fa-shield-halved"></i><span>Secure Administration Portal</span>
+                        </div>
+                        <h2 class="text-3xl font-bold text-white">Admin Management Console</h2>
+                    </div>
+                    <div class="mt-4 md:mt-0 flex items-center space-x-3">
+                        <button onclick="openAddServiceModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-navy-900 font-bold text-xs hover:opacity-95 transition shadow flex items-center space-x-2">
+                            <i class="fa-solid fa-plus"></i><span>Add New Service</span>
+                        </button>
+                        <button onclick="renderAdminDashboard()" class="px-4 py-2.5 rounded-xl bg-navy-800 border border-silver-500/20 text-silver-300 text-xs font-semibold hover:bg-navy-700 transition">
+                            <i class="fa-solid fa-rotate"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Admin Stats Overview -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-navy-800 border border-silver-500/10 rounded-2xl p-5">
+                        <div class="text-xs text-silver-400 uppercase font-semibold mb-1">Total Requests</div>
+                        <div id="adminStatTotal" class="text-3xl font-black text-white">0</div>
+                    </div>
+                    <div class="bg-navy-800 border border-silver-500/10 rounded-2xl p-5">
+                        <div class="text-xs text-silver-400 uppercase font-semibold mb-1">Pending Processing</div>
+                        <div id="adminStatPending" class="text-3xl font-black text-gold-400">0</div>
+                    </div>
+                    <div class="bg-navy-800 border border-silver-500/10 rounded-2xl p-5">
+                        <div class="text-xs text-silver-400 uppercase font-semibold mb-1">Completed Services</div>
+                        <div id="adminStatCompleted" class="text-3xl font-black text-emerald-400">0</div>
+                    </div>
+                    <div class="bg-navy-800 border border-silver-500/10 rounded-2xl p-5">
+                        <div class="text-xs text-silver-400 uppercase font-semibold mb-1">Total Revenue (Simulated)</div>
+                        <div id="adminStatRevenue" class="text-2xl font-black text-gold-400">₦0</div>
+                    </div>
+                </div>
+
+                <!-- Admin Tabs / Sections -->
+                <div class="space-y-8">
+                    <!-- Requests Management -->
+                    <div class="bg-navy-800 border border-gold-500/30 rounded-2xl p-6 shadow-xl">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center justify-between">
+                            <span>Manage Client Requests & Statuses</span>
+                            <span class="text-xs font-normal text-silver-400">Update status & assign workflows</span>
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-navy-900 border-b border-silver-500/10 text-xs uppercase tracking-wider text-silver-400">
+                                        <th class="p-3">Reference</th>
+                                        <th class="p-3">Client</th>
+                                        <th class="p-3">Service</th>
+                                        <th class="p-3">Status</th>
+                                        <th class="p-3">Payment</th>
+                                        <th class="p-3 text-right">Manage Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminRequestsTableBody" class="divide-y divide-silver-500/10 text-sm text-silver-300">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Services & Price Configuration -->
+                    <div class="bg-navy-800 border border-gold-500/30 rounded-2xl p-6 shadow-xl">
+                        <h3 class="text-lg font-bold text-white mb-4">Manage Services & Configure Prices</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-navy-900 border-b border-silver-500/10 text-xs uppercase tracking-wider text-silver-400">
+                                        <th class="p-3">Service Name</th>
+                                        <th class="p-3">Category</th>
+                                        <th class="p-3">Official Fee</th>
+                                        <th class="p-3">Service Fee</th>
+                                        <th class="p-3">Status</th>
+                                        <th class="p-3 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminServicesTableBody" class="divide-y divide-silver-500/10 text-sm text-silver-300">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Add / Edit Service Modal -->
+    <div id="serviceModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm hidden">
+        <div class="bg-navy-800 border border-gold-500/40 rounded-3xl p-6 sm:p-8 max-w-lg w-full mx-4 shadow-2xl">
+            <h3 id="serviceModalTitle" class="text-xl font-bold text-white mb-4">Add New Service</h3>
+            <form id="serviceForm" onsubmit="saveServiceConfig(event)" class="space-y-4">
+                <input type="hidden" id="editServiceId">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-silver-300 mb-1.5">Service Name</label>
+                    <input type="text" id="editName" required class="w-full px-4 py-2.5 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white focus:outline-none focus:border-gold-500">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-silver-300 mb-1.5">Category</label>
+                        <select id="editCategory" class="w-full px-4 py-2.5 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white focus:outline-none focus:border-gold-500">
+                            <option value="NIN">NIN Services</option>
+                            <option value="BVN">BVN Services</option>
+                            <option value="CAC">CAC Services</option>
+                            <option value="TIN">TIN Services</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-silver-300 mb-1.5">Official Agency</label>
+                        <input type="text" id="editAgency" value="NIMC" required class="w-full px-4 py-2.5 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white focus:outline-none focus:border-gold-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-silver-300 mb-1.5">Official Fee (₦)</label>
+                        <input type="number" id="editOfficialFee" required class="w-full px-4 py-2.5 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white focus:outline-none focus:border-gold-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-silver-300 mb-1.5">Service Fee (₦)</label>
+                        <input type="number" id="editServiceFee" required class="w-full px-4 py-2.5 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white focus:outline-none focus:border-gold-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-silver-300 mb-1.5">Short Description</label>
+                    <textarea id="editDesc" rows="2" required class="w-full px-4 py-2.5 bg-navy-900 border border-silver-500/20 rounded-xl text-sm text-white focus:outline-none focus:border-gold-500"></textarea>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" onclick="closeServiceModal()" class="px-5 py-2.5 rounded-xl bg-navy-900 text-silver-300 text-sm font-semibold hover:bg-navy-700 transition">Cancel</button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-navy-900 text-sm font-bold shadow">Save Service</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-navy-900 border-t border-gold-500/20 py-12 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-gold-500 flex items-center justify-center text-navy-900 font-bold text-xl">
+                            <i class="fa-solid fa-id-card-clip"></i>
+                        </div>
+                        <span class="text-white font-bold tracking-wider">ARD VERIFICATION</span>
+                    </div>
+                    <p class="text-silver-400 text-xs leading-relaxed mb-4">
+                        Professional Nigerian Identity Verification, Modification Assistance, and Business Registration Services platform.
+                    </p>
+                    <div class="text-xs text-gold-500 font-semibold">
+                        <i class="fa-solid fa-shield-halved"></i> NDPR Data Compliant & Secure
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Identity Categories</h4>
+                    <ul class="space-y-2 text-xs text-silver-400">
+                        <li><a href="#" onclick="filterByCategory('NIN'); switchTab('directory');" class="hover:text-gold-400">NIN Services (13)</a></li>
+                        <li><a href="#" onclick="filterByCategory('BVN'); switchTab('directory');" class="hover:text-gold-400">BVN Services (12)</a></li>
+                        <li><a href="#" onclick="filterByCategory('CAC'); switchTab('directory');" class="hover:text-gold-400">CAC Business Registration (12)</a></li>
+                        <li><a href="#" onclick="filterByCategory('TIN'); switchTab('directory');" class="hover:text-gold-400">TIN Tax Services (9)</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Official Channels</h4>
+                    <ul class="space-y-2 text-xs text-silver-400">
+                        <li><a href="https://nimc.gov.ng" target="_blank" class="hover:text-gold-400">NIMC Official Portal</a></li>
+                        <li><a href="https://www.cac.gov.ng" target="_blank" class="hover:text-gold-400">Corporate Affairs Commission</a></li>
+                        <li><a href="https://www.nibss-plc.com.ng" target="_blank" class="hover:text-gold-400">NIBSS BVN Portal</a></li>
+                        <li><a href="https://www.firs.gov.ng" target="_blank" class="hover:text-gold-400">FIRS Tax Services</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-4">Security Notice</h4>
+                    <p class="text-silver-400 text-xs leading-relaxed mb-3">
+                        We never request bank PINs, passwords, or OTPs. All requests are processed securely in compliance with Nigerian verification standards.
+                    </p>
+                    <div class="text-xs text-silver-500">
+                        &copy; 2026 ARD Verification Identity Card. All rights reserved.
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-silver-500/10 text-center text-xs text-silver-500">
+                Designed for Secure Full-Stack Nigerian Identity & Business Services Infrastructure.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Initial Default Services Data (NIN, BVN, CAC, TIN)
+        const defaultServices = [
+            // NIN Services (13)
+            { id: "nin-1", name: "NIN Validation", category: "NIN", agency: "NIMC", officialFee: 1000, serviceFee: 500, desc: "Confirm National Identification Number existence and matching basic metadata.", status: "Available" },
+            { id: "nin-2", name: "NIN Verification", category: "NIN", agency: "NIMC", officialFee: 1500, serviceFee: 500, desc: "Detailed NIN verification against NIMC database records.", status: "Available" },
+            { id: "nin-3", name: "NIN Phone Number Update Assistance", category: "NIN", agency: "NIMC", officialFee: 2000, serviceFee: 1000, desc: "Assistance with updating or linking phone numbers to your NIN.", status: "Available" },
+            { id: "nin-4", name: "NIN Verification with Phone Number", category: "NIN", agency: "NIMC", officialFee: 1500, serviceFee: 500, desc: "Verify NIN records using authorized phone number query where supported.", status: "Available" },
+            { id: "nin-5", name: "NIN Record Modification Assistance", category: "NIN", agency: "NIMC", officialFee: 5000, serviceFee: 2000, desc: "Guided assistance for biometric and demographic NIN record updates.", status: "Available" },
+            { id: "nin-6", name: "NIN Name Correction Assistance", category: "NIN", agency: "NIMC", officialFee: 4000, serviceFee: 1500, desc: "Assistance with official name spelling corrections on NIN profile.", status: "Available" },
+            { id: "nin-7", name: "NIN Date of Birth Correction Assistance", category: "NIN", agency: "NIMC", officialFee: 15000, serviceFee: 3000, desc: "Assistance for date of birth modification with supporting affidavits.", status: "Available" },
+            { id: "nin-8", name: "NIN Phone Number Correction", category: "NIN", agency: "NIMC", officialFee: 2000, serviceFee: 1000, desc: "Correct incorrect or lost phone numbers linked to NIN.", status: "Available" },
+            { id: "nin-9", name: "NIN Verification Slip", category: "NIN", agency: "NIMC", officialFee: 500, serviceFee: 500, desc: "Standard printable NIN verification slip copy.", status: "Available" },
+            { id: "nin-10", name: "NIN Premium Slip", category: "NIN", agency: "NIMC", officialFee: 1500, serviceFee: 1000, desc: "Laminated or high-security standard NIN premium ID slip.", status: "Available" },
+            { id: "nin-11", name: "NIN Slip Reprinting", category: "NIN", agency: "NIMC", officialFee: 500, serviceFee: 500, desc: "Reprint lost or misplaced standard NIN verification slips.", status: "Available" },
+            { id: "nin-12", name: "NIN Record Update Assistance", category: "NIN", agency: "NIMC", officialFee: 3000, serviceFee: 1500, desc: "General update assistance for address and secondary contact info.", status: "Available" },
+            { id: "nin-13", name: "NIN Modification Status Tracking", category: "NIN", agency: "NIMC", officialFee: 500, serviceFee: 200, desc: "Track ongoing NIMC modification ticket status.", status: "Available" },
+
+            // BVN Services (12)
+            { id: "bvn-1", name: "BVN Validation", category: "BVN", agency: "NIBSS", officialFee: 1000, serviceFee: 500, desc: "Validate active Bank Verification Number and core status.", status: "Available" },
+            { id: "bvn-2", name: "BVN Verification", category: "BVN", agency: "NIBSS", officialFee: 1500, serviceFee: 500, desc: "Official BVN details verification and matching.", status: "Available" },
+            { id: "bvn-3", name: "BVN Verification with Phone Number", category: "BVN", agency: "NIBSS", officialFee: 1500, serviceFee: 500, desc: "Verify BVN record via registered phone number lookup where supported.", status: "Available" },
+            { id: "bvn-4", name: "BVN Phone Number Update Assistance", category: "BVN", agency: "NIBSS", officialFee: 3000, serviceFee: 1500, desc: "Assistance to update phone numbers linked to bank BVN.", status: "Available" },
+            { id: "bvn-5", name: "BVN Information Correction Assistance", category: "BVN", agency: "NIBSS", officialFee: 5000, serviceFee: 2000, desc: "Guide and assist with official BVN data corrections.", status: "Available" },
+            { id: "bvn-6", name: "BVN Name Correction Assistance", category: "BVN", agency: "NIBSS", officialFee: 4000, serviceFee: 1500, desc: "Assistance for correcting name mismatch on BVN accounts.", status: "Available" },
+            { id: "bvn-7", name: "BVN Date of Birth Correction Assistance", category: "BVN", agency: "NIBSS", officialFee: 10000, serviceFee: 2500, desc: "Assistance for BVN date of birth rectifications.", status: "Available" },
+            { id: "bvn-8", name: "BVN Enrolment Assistance", category: "BVN", agency: "NIBSS / Banks", officialFee: 0, serviceFee: 2000, desc: "New BVN enrolment guidance and bank appointment assistance.", status: "Available" },
+            { id: "bvn-9", name: "BVN Verification Slip or Confirmation", category: "BVN", agency: "NIBSS", officialFee: 1000, serviceFee: 500, desc: "Official BVN confirmation printout and slip.", status: "Available" },
+            { id: "bvn-10", name: "BVN Record Update Assistance", category: "BVN", agency: "NIBSS", officialFee: 3000, serviceFee: 1500, desc: "Assistance for general banking record updates.", status: "Available" },
+            { id: "bvn-11", name: "BVN–NIN Linking Assistance", category: "BVN", agency: "NIBSS & NIMC", officialFee: 1500, serviceFee: 1000, desc: "Seamless assistance linking your BVN and National ID number.", status: "Available" },
+            { id: "bvn-12", name: "BVN Modification Status Tracking", category: "BVN", agency: "NIBSS", officialFee: 500, serviceFee: 200, desc: "Track status of pending BVN updates and modifications.", status: "Available" },
+
+            // CAC Services (12)
+            { id: "cac-1", name: "CAC Business Name Registration", category: "CAC", agency: "CAC Nigeria", officialFee: 10000, serviceFee: 5000, desc: "Complete Enterprise / Business Name registration with certificate.", status: "Available" },
+            { id: "cac-2", name: "CAC Company Registration", category: "CAC", agency: "CAC Nigeria", officialFee: 40000, serviceFee: 15000, desc: "Private Limited Liability Company (Ltd) incorporation assistance.", status: "Available" },
+            { id: "cac-3", name: "CAC Registration Number Verification", category: "CAC", agency: "CAC Nigeria", officialFee: 1000, serviceFee: 500, desc: "Verify active status of RC or BN registration numbers.", status: "Available" },
+            { id: "cac-4", name: "CAC Certificate of Registration Assistance", category: "CAC", agency: "CAC Nigeria", officialFee: 2000, serviceFee: 1000, desc: "Retrieve certified true copies of CAC registration certificates.", status: "Available" },
+            { id: "cac-5", name: "CAC Status Report", category: "CAC", agency: "CAC Nigeria", officialFee: 5000, serviceFee: 2000, desc: "Official CAC company status report detailing directors and shareholders.", status: "Available" },
+            { id: "cac-6", name: "CAC Business Name Modification", category: "CAC", agency: "CAC Nigeria", officialFee: 15000, serviceFee: 5000, desc: "Modify business name details, address, or objectives.", status: "Available" },
+            { id: "cac-7", name: "CAC Company Information Update", category: "CAC", agency: "CAC Nigeria", officialFee: 20000, serviceFee: 6000, desc: "Update company directors, secretary, or share capital.", status: "Available" },
+            { id: "cac-8", name: "CAC Annual Returns Filing Assistance", category: "CAC", agency: "CAC Nigeria", officialFee: 10000, serviceFee: 4000, desc: "Filing annual returns to keep CAC profile active and compliant.", status: "Available" },
+            { id: "cac-9", name: "CAC Business Name Search", category: "CAC", agency: "CAC Nigeria", officialFee: 1000, serviceFee: 500, desc: "Search existing registered business names on CAC database.", status: "Available" },
+            { id: "cac-10", name: "CAC Company Name Availability Search", category: "CAC", agency: "CAC Nigeria", officialFee: 1000, serviceFee: 500, desc: "Check if your proposed company name is available for reservation.", status: "Available" },
+            { id: "cac-11", name: "CAC Post-Registration Services", category: "CAC", agency: "CAC Nigeria", officialFee: 10000, serviceFee: 3000, desc: "Miscellaneous post-incorporation filing and support.", status: "Available" },
+            { id: "cac-12", name: "CAC Registration Status Tracking", category: "CAC", agency: "CAC Nigeria", officialFee: 500, serviceFee: 200, desc: "Track progress of CAC incorporation and filing applications.", status: "Available" },
+
+            // TIN Services (9)
+            { id: "tin-1", name: "TIN Registration Assistance", category: "TIN", agency: "FIRS / State IRS", officialFee: 0, serviceFee: 3000, desc: "Assistance to register for an official Tax Identification Number.", status: "Available" },
+            { id: "tin-2", name: "TIN Verification", category: "TIN", agency: "FIRS", officialFee: 1000, serviceFee: 500, desc: "Verify Tax Identification Number validity and tax office.", status: "Available" },
+            { id: "tin-3", name: "TIN Validation", category: "TIN", agency: "FIRS", officialFee: 1000, serviceFee: 500, desc: "Confirm taxpayer name and matching TIN record.", status: "Available" },
+            { id: "tin-4", name: "TIN Verification with Phone Number", category: "TIN", agency: "FIRS", officialFee: 1500, serviceFee: 500, desc: "Verify TIN using official taxpayer phone number where supported.", status: "Available" },
+            { id: "tin-5", name: "TIN Retrieval Assistance", category: "TIN", agency: "FIRS", officialFee: 1500, serviceFee: 1000, desc: "Retrieve lost or forgotten Tax Identification Number.", status: "Available" },
+            { id: "tin-6", name: "TIN Certificate or Confirmation", category: "TIN", agency: "FIRS", officialFee: 2000, serviceFee: 1000, desc: "Download or print official TIN certificate document.", status: "Available" },
+            { id: "tin-7", name: "Business TIN Registration Assistance", category: "TIN", agency: "FIRS", officialFee: 5000, serviceFee: 3000, desc: "Register corporate business TIN linked with CAC certificate.", status: "Available" },
+            { id: "tin-8", name: "Taxpayer Information Update Assistance", category: "TIN", agency: "FIRS", officialFee: 4000, serviceFee: 2000, desc: "Update taxpayer email, address, and contact details on tax portal.", status: "Available" },
+            { id: "tin-9", name: "TIN Application Status Tracking", category: "TIN", agency: "FIRS", officialFee: 500, serviceFee: 200, desc: "Track status of TIN applications and verification tickets.", status: "Available" }
+        ];
+
+        // Initial Requests Storage
+        const defaultRequests = [
+            {
+                ref: "ARD-NIN-9942",
+                serviceId: "nin-2",
+                serviceName: "NIN Verification",
+                category: "NIN",
+                fullName: "Oluwaseun Adeleke",
+                email: "oluwaseun@example.com",
+                phone: "08031234567",
+                description: "Need urgent verification for employment.",
+                officialFee: 1500,
+                serviceFee: 500,
+                total: 2000,
+                date: "2026-06-10 14:22",
+                paymentStatus: "Successful",
+                status: "Completed"
+            },
+            {
+                ref: "ARD-CAC-1102",
+                serviceId: "cac-1",
+                serviceName: "CAC Business Name Registration",
+                category: "CAC",
+                fullName: "Chioma Okoro",
+                email: "chioma@example.com",
+                phone: "08098765432",
+                description: "Registering 'Apex Global Logistics'.",
+                officialFee: 10000,
+                serviceFee: 5000,
+                total: 15000,
+                date: "2026-06-11 09:15",
+                paymentStatus: "Successful",
+                status: "Under Review"
+            }
+        ];
+
+        // Local Storage Initialization
+        let services = JSON.parse(localStorage.getItem('ard_services')) || defaultServices;
+        let requests = JSON.parse(localStorage.getItem('ard_requests')) || defaultRequests;
+
+        function saveToLocalStorage() {
+            localStorage.setItem('ard_services', JSON.stringify(services));
+            localStorage.setItem('ard_requests', JSON.stringify(requests));
+        }
+
+        // Navigation Switch Tab
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) {
+                target.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Update active state on nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.getAttribute('data-target') === tabId) {
+                    btn.classList.add('text-gold-500', 'bg-navy-800');
+                    btn.classList.remove('text-silver-400');
+                } else {
+                    btn.classList.remove('text-gold-500', 'bg-navy-800');
+                    if(btn.getAttribute('data-target')) btn.classList.add('text-silver-400');
+                }
+            });
+
+            if (tabId === 'directory') {
+                renderServicesDirectory('ALL');
+            } else if (tabId === 'user-dashboard') {
+                loadUserRequests();
+            } else if (tabId === 'admin-dashboard') {
+                renderAdminDashboard();
+            }
+        }
+
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Custom Modal helper (replaces alert)
+        function showModal(title, message, isError = false) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = message;
+            const iconDiv = document.getElementById('modalIcon');
+            if (isError) {
+                iconDiv.className = "w-10 h-10 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center text-xl";
+                iconDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+            } else {
+                iconDiv.className = "w-10 h-10 rounded-full bg-gold-500/20 text-gold-500 flex items-center justify-center text-xl";
+                iconDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+            }
+            document.getElementById('messageModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('messageModal').classList.add('hidden');
+        }
+
+        // Render Service Directory
+        function renderServicesDirectory(categoryFilter, searchQuery = '') {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = '';
+
+            let filtered = services;
+            if (categoryFilter && categoryFilter !== 'ALL') {
+                filtered = filtered.filter(s => s.category === categoryFilter);
+            }
+
+            if (searchQuery.trim() !== '') {
+                const q = searchQuery.toLowerCase();
+                filtered = filtered.filter(s => s.name.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q) || s.agency.toLowerCase().includes(q));
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-12 text-center text-silver-500">No matching services found.</div>`;
+                return;
+            }
+
+            filtered.forEach(service => {
+                const totalFee = service.officialFee + service.serviceFee;
+                const card = document.createElement('div');
+                card.className = "bg-navy-800 border border-gold-500/20 rounded-2xl p-6 flex flex-col justify-between hover:border-gold-500/60 transition shadow-lg group";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-1 rounded-full bg-gold-500/10 text-gold-400 text-xs font-bold border border-gold-500/30">${service.category}</span>
+                            <span class="text-xs text-silver-400 font-medium"><i class="fa-solid fa-building-columns mr-1 text-gold-500"></i>${service.agency}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2 group-hover:text-gold-400 transition">${service.name}</h3>
+                        <p class="text-silver-400 text-xs mb-6 leading-relaxed">${service.desc}</p>
+                    </div>
+                    <div>
+                        <div class="bg-navy-900/80 rounded-xl p-3 mb-4 border border-silver-500/10 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-silver-500 uppercase block">Official Fee: ₦${service.officialFee.toLocaleString()}</span>
+                                <span class="text-xs text-silver-300 font-medium">Service Fee: ₦${service.serviceFee.toLocaleString()}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] text-silver-500 uppercase block">Total</span>
+                                <span class="text-base font-black text-gold-400">₦${totalFee.toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="openRequestForm('${service.id}')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-navy-900 text-xs font-bold hover:opacity-95 transition shadow">
+                                Request Service
+                            </button>
+                            <button onclick="switchTab('track')" class="w-full py-2.5 rounded-xl bg-navy-900 border border-silver-500/20 text-silver-300 text-xs font-semibold hover:bg-navy-700 transition">
+                                Track
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterByCategory(cat) {
+            // Update active pill styling
+            document.querySelectorAll('.category-pill').forEach(btn => {
+                if(btn.innerText.includes(cat) || (cat === 'ALL' && btn.innerText.includes('All'))) {
+                    btn.className = "category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-gold-500 text-navy-900 transition shadow";
+                } else {
+                    btn.className = "category-pill px-4 py-2 rounded-xl text-xs font-semibold bg-navy-800 border border-silver-500/20 text-silver-300 hover:border-gold-500 transition";
+                }
+            });
+            const searchVal = document.getElementById('serviceSearchInput').value;
+            renderServicesDirectory(cat, searchVal);
+            if(document.getElementById('tab-directory').classList.contains('hidden')) {
+                switchTab('directory');
+            }
+        }
+
+        function filterServices() {
+            const query = document.getElementById('serviceSearchInput').value;
+            renderServicesDirectory('ALL', query);
+        }
+
+        // Open Request Form for specific service
+        function openRequestForm(serviceId) {
+            const service = services.find(s => s.id === serviceId);
+            if (!service) return;
+
+            document.getElementById('formServiceId').value = service.id;
+            document.getElementById('formServiceName').value = service.name;
+            document.getElementById('formCategory').value = service.category;
+
+            document.getElementById('reqCategoryBadge').innerText = `${service.category} Service • ${service.agency}`;
+            document.getElementById('reqServiceTitle').innerText = service.name;
+            document.getElementById('reqServiceDesc').innerText = service.desc;
+
+            document.getElementById('displayOfficialFee').innerText = `₦${service.officialFee.toLocaleString()}`;
+            document.getElementById('displayServiceFee').innerText = `₦${service.serviceFee.toLocaleString()}`;
+            document.getElementById('displayTotalFee').innerText = `₦${(service.officialFee + service.serviceFee).toLocaleString()}`;
+
+            // Switch to request tab
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-request').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Handle Form Submission & Reference Generation
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const serviceId = document.getElementById('formServiceId').value;
+            const serviceName = document.getElementById('formServiceName').value;
+            const category = document.getElementById('formCategory').value;
+            const fullName = document.getElementById('clientFullName').value;
+            const email = document.getElementById('clientEmail').value;
+            const phone = document.getElementById('clientPhone').value;
+            const description = document.getElementById('clientDescription').value;
+
+            const service = services.find(s => s.id === serviceId);
+            if (!service) return;
+
+            const total = service.officialFee + service.serviceFee;
+            const randomDigits = Math.floor(1000 + Math.random() * 9000);
+            const refCode = `ARD-${category}-${randomDigits}`;
+
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+            const newReq = {
+                ref: refCode,
+                serviceId,
+                serviceName,
+                category,
+                fullName,
+                email,
+                phone,
+                description,
+                officialFee: service.officialFee,
+                serviceFee: service.serviceFee,
+                total,
+                date: dateStr,
+                paymentStatus: "Successful (Simulated)",
+                status: "Pending"
+            };
+
+            requests.unshift(newReq);
+            saveToLocalStorage();
+
+            showModal("Request Submitted Successfully!", `Your request has been saved and payment verified via official gateway. Your unique Tracking Reference is: ${refCode}. Use this reference to track your status anytime.`);
+            
+            // Reset form and switch to user dashboard
+            document.getElementById('serviceRequestForm').reset();
+            switchTab('user-dashboard');
+        }
+
+        // Execute Tracking Search
+        function executeTrackSearch() {
+            const code = document.getElementById('trackInputCode').value.trim().toUpperCase();
+            const container = document.getElementById('trackResultContainer');
+            container.classList.remove('hidden');
+
+            const req = requests.find(r => r.ref.toUpperCase() === code);
+            if (!req) {
+                container.innerHTML = `
+                    <div class="bg-navy-800 border border-red-500/30 rounded-2xl p-6 text-center">
+                        <div class="w-12 h-12 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center text-xl mx-auto mb-3">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1">Reference Not Found</h3>
+                        <p class="text-silver-400 text-xs">No request matches code "${code}". Please check and try again.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let statusColor = "text-gold-400 bg-gold-500/10 border-gold-500/30";
+            if(req.status === "Completed") statusColor = "text-emerald-400 bg-emerald-500/10 border-emerald-500/30";
+            if(req.status === "Under Review") statusColor = "text-blue-400 bg-blue-500/10 border-blue-500/30";
+
+            container.innerHTML = `
+                <div class="bg-navy-800 border border-gold-500/40 rounded-3xl p-6 sm:p-8 shadow-xl text-left">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-silver-500/10">
+                        <div>
+                            <span class="text-xs text-silver-500 uppercase tracking-wider block">Reference Code</span>
+                            <span class="text-lg font-black text-white">${req.ref}</span>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold border ${statusColor}">${req.status}</span>
+                    </div>
+                    <div class="space-y-3 text-sm text-silver-300 mb-6">
+                        <div class="flex justify-between"><span class="text-silver-500">Service:</span> <span class="font-semibold text-white">${req.serviceName}</span></div>
+                        <div class="flex justify-between"><span class="text-silver-500">Category:</span> <span class="font-semibold">${req.category}</span></div>
+                        <div class="flex justify-between"><span class="text-silver-500">Client Name:</span> <span class="font-semibold">${req.fullName}</span></div>
+                        <div class="flex justify-between"><span class="text-silver-500">Submitted Date:</span> <span class="font-semibold">${req.date}</span></div>
+                        <div class="flex justify-between"><span class="text-silver-500">Payment Status:</span> <span class="font-semibold text-emerald-400">${req.paymentStatus}</span></div>
+                        <div class="flex justify-between"><span class="text-silver-500">Total Paid:</span> <span class="font-semibold text-gold-400">₦${req.total.toLocaleString()}</span></div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-navy-900 border border-silver-500/10">
+                        <span class="text-xs text-silver-400 uppercase tracking-wider block mb-1">Request Description</span>
+                        <p class="text-xs text-silver-300 leading-relaxed">${req.description}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Load User Requests Table
+        function loadUserRequests() {
+            const tbody = document.getElementById('userRequestsTableBody');
+            tbody.innerHTML = '';
+
+            if (requests.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-silver-500">No requests submitted yet.</td></tr>`;
+                return;
+            }
+
+            requests.forEach(req => {
+                let statusBadgeClass = "text-gold-400 bg-gold-500/10 border-gold-500/30";
+                if(req.status === "Completed") statusBadgeClass = "text-emerald-400 bg-emerald-500/10 border-emerald-500/30";
+                if(req.status === "Under Review") statusBadgeClass = "text-blue-400 bg-blue-500/10 border-blue-500/30";
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-navy-900/50 transition";
+                tr.innerHTML = `
+                    <td class="p-4 font-mono font-bold text-white">${req.ref}</td>
+                    <td class="p-4 font-medium">${req.serviceName}</td>
+                    <td class="p-4"><span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-gold-500/10 text-gold-400 border border-gold-500/30">${req.category}</span></td>
+                    <td class="p-4 text-xs text-silver-400">${req.date}</td>
+                    <td class="p-4 text-xs font-semibold text-emerald-400">${req.paymentStatus}</td>
+                    <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-bold border ${statusBadgeClass}">${req.status}</span></td>
+                    <td class="p-4 text-right">
+                        <button onclick="document.getElementById('trackInputCode').value='${req.ref}'; switchTab('track'); executeTrackSearch();" class="px-3 py-1.5 rounded-lg bg-navy-900 border border-silver-500/20 text-xs font-semibold text-silver-300 hover:text-gold-400 transition">View</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Render Admin Dashboard
+        function renderAdminDashboard() {
+            // Update stats
+            document.getElementById('adminStatTotal').innerText = requests.length;
+            const pendingCount = requests.filter(r => r.status === 'Pending' || r.status === 'Under Review').length;
+            document.getElementById('adminStatPending').innerText = pendingCount;
+            const completedCount = requests.filter(r => r.status === 'Completed').length;
+            document.getElementById('adminStatCompleted').innerText = completedCount;
+            const totalRev = requests.reduce((sum, r) => sum + r.total, 0);
+            document.getElementById('adminStatRevenue').innerText = `₦${totalRev.toLocaleString()}`;
+
+            // Render Admin Requests Table
+            const reqTbody = document.getElementById('adminRequestsTableBody');
+            reqTbody.innerHTML = '';
+            requests.forEach((req, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-navy-900/50 transition";
+                tr.innerHTML = `
+                    <td class="p-3 font-mono font-bold text-white">${req.ref}</td>
+                    <td class="p-3">
+                        <div class="font-semibold text-white">${req.fullName}</div>
+                        <div class="text-xs text-silver-500">${req.phone}</div>
+                    </td>
+                    <td class="p-3 text-xs">${req.serviceName}</td>
+                    <td class="p-3">
+                        <select onchange="updateRequestStatus(${idx}, this.value)" class="px-2 py-1 rounded bg-navy-900 border border-silver-500/20 text-xs text-white focus:outline-none">
+                            <option value="Pending" ${req.status==='Pending'?'selected':''}>Pending</option>
+                            <option value="Under Review" ${req.status==='Under Review'?'selected':''}>Under Review</option>
+                            <option value="Awaiting Official Verification" ${req.status==='Awaiting Official Verification'?'selected':''}>Awaiting Official Verification</option>
+                            <option value="Referred to Official Provider" ${req.status==='Referred to Official Provider'?'selected':''}>Referred to Official Provider</option>
+                            <option value="Completed" ${req.status==='Completed'?'selected':''}>Completed</option>
+                            <option value="Rejected" ${req.status==='Rejected'?'selected':''}>Rejected</option>
+                        </select>
+                    </td>
+                    <td class="p-3 text-xs text-emerald-400 font-semibold">₦${req.total.toLocaleString()}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteRequest(${idx})" class="px-2.5 py-1 rounded bg-red-500/10 border border-red-500/30 text-red-400 text-xs hover:bg-red-500/20 transition"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                reqTbody.appendChild(tr);
+            });
+
+            // Render Admin Services Table
+            const srvTbody = document.getElementById('adminServicesTableBody');
+            srvTbody.innerHTML = '';
+            services.forEach((srv, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-navy-900/50 transition";
+                tr.innerHTML = `
+                    <td class="p-3">
+                        <div class="font-semibold text-white">${srv.name}</div>
+                        <div class="text-[10px] text-silver-500">${srv.agency}</div>
+                    </td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-gold-500/10 text-gold-400">${srv.category}</span></td>
+                    <td class="p-3 text-xs">₦${srv.officialFee.toLocaleString()}</td>
+                    <td class="p-3 text-xs text-gold-400 font-semibold">₦${srv.serviceFee.toLocaleString()}</td>
+                    <td class="p-3"><span class="text-xs text-emerald-400 font-medium">${srv.status}</span></td>
+                    <td class="p-3 text-right space-x-2">
+                        <button onclick="openEditServiceModal('${srv.id}')" class="px-2.5 py-1 rounded bg-navy-900 border border-silver-500/20 text-xs text-silver-300 hover:text-gold-400 transition"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteService('${srv.id}')" class="px-2.5 py-1 rounded bg-red-500/10 border border-red-500/30 text-red-400 text-xs hover:bg-red-500/20 transition"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                srvTbody.appendChild(tr);
+            });
+        }
+
+        function updateRequestStatus(idx, newStatus) {
+            requests[idx].status = newStatus;
+            saveToLocalStorage();
+            renderAdminDashboard();
+        }
+
+        function deleteRequest(idx) {
+            if(confirm("Are you sure you want to delete this request record?")) {
+                requests.splice(idx, 1);
+                saveToLocalStorage();
+                renderAdminDashboard();
+            }
+        }
+
+        // Service Modal Management for Admin
+        function openAddServiceModal() {
+            document.getElementById('serviceModalTitle').innerText = "Add New Service";
+            document.getElementById('serviceForm').reset();
+            document.getElementById('editServiceId').value = "";
+            document.getElementById('serviceModal').classList.remove('hidden');
+        }
+
+        function openEditServiceModal(id) {
+            const srv = services.find(s => s.id === id);
+            if (!srv) return;
+            document.getElementById('serviceModalTitle').innerText = "Edit Service & Pricing";
+            document.getElementById('editServiceId').value = srv.id;
+            document.getElementById('editName').value = srv.name;
+            document.getElementById('editCategory').value = srv.category;
+            document.getElementById('editAgency').value = srv.agency;
+            document.getElementById('editOfficialFee').value = srv.officialFee;
+            document.getElementById('editServiceFee').value = srv.serviceFee;
+            document.getElementById('editDesc').value = srv.desc;
+            document.getElementById('serviceModal').classList.remove('hidden');
+        }
+
+        function closeServiceModal() {
+            document.getElementById('serviceModal').classList.add('hidden');
+        }
+
+        function saveServiceConfig(e) {
+            e.preventDefault();
+            const id = document.getElementById('editServiceId').value;
+            const name = document.getElementById('editName').value;
+            const category = document.getElementById('editCategory').value;
+            const agency = document.getElementById('editAgency').value;
+            const officialFee = parseFloat(document.getElementById('editOfficialFee').value);
+            const serviceFee = parseFloat(document.getElementById('editServiceFee').value);
+            const desc = document.getElementById('editDesc').value;
+
+            if (id) {
+                // Edit existing
+                const index = services.findIndex(s => s.id === id);
+                if (index !== -1) {
+                    services[index] = { ...services[index], name, category, agency, officialFee, serviceFee, desc };
+                }
+            } else {
+                // Add new
+                const newId = `custom-${Date.now()}`;
+                services.push({ id: newId, name, category, agency, officialFee, serviceFee, desc, status: "Available" });
+            }
+
+            saveToLocalStorage();
+            closeServiceModal();
+            renderAdminDashboard();
+            showModal("Success", "Service configuration saved successfully.");
+        }
+
+        function deleteService(id) {
+            if(confirm("Are you sure you want to delete this service?")) {
+                services = services.filter(s => s.id !== id);
+                saveToLocalStorage();
+                renderAdminDashboard();
+            }
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            renderServicesDirectory('ALL');
+        };
+    </script>
+</body>
+</html>
